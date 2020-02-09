@@ -1,0 +1,66 @@
+var mqttServer = "192.168.0.100";
+var mqttOptions = {
+  client_id: "espurino-test-esp8266",
+  keep_alive: 60,         // keep alive time in seconds
+  port: 1883,             // port number
+  clean_session: true,
+  protocol_name: "MQTT"  // or MQIsdp, etc..
+};
+
+var wifiHostname = "espruino-esp8266";
+var wifiOptions = {
+  hostname: "espruino-esp8266",
+  ssid: "Sabeeh 2.4Ghz",
+  password: "Sabeeh_697"
+};
+
+var mqtt = require("MQTT").create(mqttServer, mqttOptions);
+var Wifi = require("Wifi");
+
+Wifi.setHostname(wifiOptions.hostname);
+
+Wifi.on('connected', function(details) {
+  console.log('wifi details');
+  console.log(details);
+  mqtt.connect();
+});
+
+Wifi.on('disconnect', function(){
+  mqtt.disconnect();
+});
+
+Wifi.connect(wifiOptions.ssid, {password: wifiOptions.password}, function(err){
+ console.log("connected? err=", err);
+});
+
+mqtt.on('connect', function() {
+  console.log('========> MQTT Connected');
+  mqtt.subscribe("test");
+  mqtt.publish(
+    "test",
+    "Hello from espurino"
+  );
+});
+
+mqtt.on('error', function(error){
+  console.log("=====> MQTT ERROR:");
+  console.log(error);
+});
+
+mqtt.on('disconnected', function() {
+  console.log("MQTT disconnected... reconnecting.");
+  setTimeout(function() {
+    mqtt.connect();
+  }, 1000);
+});
+
+mqtt.on('message', function(topic, message){
+  console.log("message recieved");
+  console.log("topic: "+topic);
+  console.log("message: "+message);
+});
+
+mqtt.on('publish', function (pub) {
+  console.log("topic: "+pub.topic);
+  console.log("message: "+pub.message);
+});
