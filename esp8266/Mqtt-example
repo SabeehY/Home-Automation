@@ -10,8 +10,8 @@ var mqttOptions = {
 var wifiHostname = "espruino-esp8266";
 var wifiOptions = {
   hostname: "espruino-esp8266",
-  ssid: "Sabeeh 2.4Ghz",
-  password: "Sabeeh_697"
+  ssid: "",
+  password: ""
 };
 
 var mqtt = require("MQTT").create(mqttServer, mqttOptions);
