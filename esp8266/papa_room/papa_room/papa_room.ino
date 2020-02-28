@@ -7,8 +7,8 @@
 #include <AsyncMqttClient.h>
 #include <EEPROM.h>
 
-#define WIFI_SSID "Sabeeh 2.4Ghz"
-#define WIFI_PASSWORD "Sabeeh_697"
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
 
 #define MQTT_HOST IPAddress(192, 168, 0, 100)
 #define MQTT_PORT 1883
